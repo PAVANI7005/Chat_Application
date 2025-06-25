@@ -1,4 +1,15 @@
 # Chat_Application
+COMPANY: CODITECH IT SOLUTIONS
+
+NAME: Chebrolu Pavani
+
+INTERN ID: CT06DM516
+
+DOMAIN: FULL STACK WEB DEVELOPMENT
+
+BATCH DURATION: MAY 10th, 2025 to June 25th, 2025.
+
+MENTOR NAME: NEELA SANTHOSH KUMAR
 A simple real-time chat application built with **Node.js**, **Express**, and **Socket.IO**. The app allows users to send and receive messages instantly through a web interface.
 ## 🚀 Features
 
