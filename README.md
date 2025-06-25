@@ -10,11 +10,14 @@ A simple real-time chat application built with **Node.js**, **Express**, and **S
 ## 📁 Project Structure
 
 chat-app/
+
+
 ├── index.html # Frontend UI
 ├── server.js # Backend server with Socket.IO
 ├── package.json # Project metadata and dependencies
 ├── package-lock.json # Dependency lock file
 └── README.md # Project documentation
+
 
 1. **Clone the repository**
    ```bash
@@ -34,3 +37,8 @@ socket.io
 cors
 📝 License
 This project is licensed under the ISC License.
+OutPut:
+
+![Image](https://github.com/user-attachments/assets/0321169a-800f-4d78-86e9-17c03d16db7d)
+
+![Image](https://github.com/user-attachments/assets/fce7a1ed-b5b9-4a27-a890-a5cafd486b3c)
