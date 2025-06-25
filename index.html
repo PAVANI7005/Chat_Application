@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Real-time Chat App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      :root {
+        --primary-color: #007bff;
+        --primary-hover-color: #0056b3;
+        --light-gray: #f0f2f5;
+        --border-color: #ddd;
+        --background-color: #fff;
+        --message-bg: #e9e9eb;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: var(--light-gray);
+      }
+
+      #chat-container {
+        width: 100%;
+        max-width: 450px;
+        height: 90vh;
+        max-height: 700px;
+        background: var(--background-color);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #chat-header {
+        padding: 15px 20px;
+        background: var(--primary-color);
+        color: white;
+        text-align: center;
+      }
+
+      #chat-header h2 {
+        margin: 0;
+        font-size: 1.2em;
+      }
+
+      #messages {
+        list-style: none;
+        padding: 20px;
+        margin: 0;
+        flex-grow: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #messages li {
+        padding: 10px 15px;
+        background: var(--message-bg);
+        margin-bottom: 10px;
+        border-radius: 18px;
+        max-width: 80%;
+        word-wrap: break-word;
+        align-self: flex-start;
+      }
+
+      #messages li.sent {
+        align-self: flex-end;
+        background: var(--primary-color);
+        color: white;
+      }
+
+      #message-form {
+        display: flex;
+        padding: 15px;
+        border-top: 1px solid var(--border-color);
+        background: #f9f9f9;
+      }
+
+      #messageInput {
+        flex-grow: 1;
+        border: 1px solid var(--border-color);
+        padding: 10px 15px;
+        border-radius: 20px;
+        margin-right: 10px;
+        font-size: 1em;
+      }
+
+      #messageInput:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      }
+
+      #message-form button {
+        padding: 10px 20px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: background-color 0.2s;
+      }
+
+      #message-form button:hover {
+        background: var(--primary-hover-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chat-container">
+      <div id="chat-header">
+        <h2>Real-time Chat 🚀</h2>
+      </div>
+      <ul id="messages"></ul>
+      <form id="message-form">
+        <input
+          id="messageInput"
+          placeholder="Type a message..."
+          autocomplete="off"
+          required
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script>
+      const socket = io("http://localhost:3000");
+      const form = document.getElementById("message-form");
+      const input = document.getElementById("messageInput");
+      const messages = document.getElementById("messages");
+
+      // Handle form submission to send a message
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent page reload
+        const msg = input.value;
+        if (msg.trim() !== "") {
+          // Display the sent message
+          const sentLi = document.createElement("li");
+          sentLi.textContent = msg;
+          sentLi.classList.add("sent");
+          messages.appendChild(sentLi);
+
+          // Send the message to the server
+          socket.emit("send_message", msg);
+
+          // Display the received message as a reply
+          const receivedLi = document.createElement("li");
+          receivedLi.textContent = msg;
+          messages.appendChild(receivedLi);
+
+          messages.scrollTop = messages.scrollHeight;
+          input.value = "";
+          input.focus(); // Keep focus on the input field
+        }
+      });
+
+      // Listen for incoming messages and display them
+      socket.on("receive_message", (msg) => {
+        const li = document.createElement("li");
+        li.textContent = msg;
+        messages.appendChild(li);
+        // Scroll to the bottom to see the latest message
+        messages.scrollTop = messages.scrollHeight;
+      });
+    </script>
+  </body>
+</html>
